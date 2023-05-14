@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { FilterBox } from './FilterBox.styled';
-import { setFilterSearchValue } from 'redux/filterSlice';
-import { selectFilterSearchValue } from 'redux/selectors';
+import { setFilterSearchValue } from 'redux/Contacts/filterSlice';
+import { selectFilterSearchValue } from 'redux/Contacts/selectors';
 
 export const Filter = () => {
   const filterSearchValue = useSelector(selectFilterSearchValue);
@@ -10,9 +10,10 @@ export const Filter = () => {
 
   return (
     <FilterBox>
-      <label htmlFor="exampleInputName">Find contacts by name</label>
+      <label htmlFor="filterInputName">Find contacts by name</label>
       <input
         type="text"
+        id="filterInputName"
         name="name"
         pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
         title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
