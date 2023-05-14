@@ -1,31 +1,60 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { ContactForm } from './ContactForm/ContactForm';
-import { ContactList } from './ContactList/ContactList';
-import { Container } from './Container.styled';
-import { Filter } from './Filter/Filter';
-import { useEffect } from 'react';
-import { fetchContactsThunk } from 'redux/operations';
+import { useEffect, lazy } from 'react';
+import { useDispatch } from 'react-redux';
+import { Route, Routes } from 'react-router-dom';
+import { PrivateRoute } from './PrivateRoute';
+import { RestrictedRoute } from './RestrictedRoute';
+import { refreshUser } from 'redux/auth/operations';
+import { useAuth } from 'hooks';
+import { Layout } from './Layout';
 import { Toaster } from 'react-hot-toast';
-import { selectError, selectIsLoading } from 'redux/selectors';
+
+const HomePage = lazy(() => import('../pages/Home'));
+const RegisterPage = lazy(() => import('../pages/Register'));
+const LoginPage = lazy(() => import('../pages/Login'));
+const PhoneBook = lazy(() => import('../pages/PhoneBook'));
 
 export const App = () => {
   const dispatch = useDispatch();
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
+  const { isRefreshing } = useAuth();
 
   useEffect(() => {
-    dispatch(fetchContactsThunk());
+    dispatch(refreshUser());
   }, [dispatch]);
-  return (
-    <Container>
-      <h1>Phonebook</h1>
-      <ContactForm />
 
-      <h2>Contacts</h2>
-      <Filter />
-      <ContactList />
-      {isLoading && !error && <b>Request in progress...</b>}
+  return isRefreshing ? (
+    <b>Refreshing user...</b>
+  ) : (
+    <>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route
+            path="/register"
+            element={
+              <RestrictedRoute
+                redirectTo="/contacts"
+                component={<RegisterPage />}
+              />
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <RestrictedRoute
+                redirectTo="/contacts"
+                component={<LoginPage />}
+              />
+            }
+          />
+          <Route
+            path="/contacts"
+            element={
+              <PrivateRoute redirectTo="/login" component={<PhoneBook />} />
+            }
+          />
+        </Route>
+      </Routes>
       <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
-    </Container>
+    </>
   );
 };
