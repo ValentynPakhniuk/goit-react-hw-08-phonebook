@@ -2,9 +2,9 @@ import { Button } from 'components/Button/Button.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Item } from './ContactItem.styled';
-import { deleteContactsThunk } from 'redux/operations';
+import { deleteContactsThunk } from 'redux/Contacts/operations';
 import { useState } from 'react';
-import { selectIsLoading } from 'redux/selectors';
+import { selectIsLoading } from 'redux/Contacts/selectors';
 
 export const ContactItem = ({ contact: { name, number, id } }) => {
   const [contactId, setContactId] = useState(null);
@@ -34,7 +34,6 @@ export const ContactItem = ({ contact: { name, number, id } }) => {
 
 ContactItem.propTypes = {
   contact: PropTypes.exact({
-    createdAt: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     number: PropTypes.string.isRequired,
