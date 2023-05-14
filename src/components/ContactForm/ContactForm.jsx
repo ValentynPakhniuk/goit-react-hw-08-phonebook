@@ -1,8 +1,11 @@
 import { Button } from 'components/Button/Button.styled';
-import { Box, Form } from './ContainerForm.styled';
+import { Box, FormContact } from './ContainerForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContactsThunk } from 'redux/operations';
-import { selectIsLoading, selectVisibleContact } from 'redux/selectors';
+import { addContactsThunk } from 'redux/Contacts/operations';
+import {
+  selectIsLoading,
+  selectVisibleContact,
+} from 'redux/Contacts/selectors';
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
@@ -23,12 +26,13 @@ export const ContactForm = () => {
   };
 
   return (
-    <Form onSubmit={handleClick}>
+    <FormContact onSubmit={handleClick}>
       <Box>
         <div>
           <label htmlFor="exampleInputName">Name</label>
           <input
             type="text"
+            id="exampleInputName"
             name="name"
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
@@ -39,6 +43,7 @@ export const ContactForm = () => {
           <label htmlFor="exampleInputNumber">Number</label>
           <input
             type="tel"
+            id="exampleInputNumber"
             name="number"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
@@ -49,6 +54,6 @@ export const ContactForm = () => {
           Add contact
         </Button>
       </Box>
-    </Form>
+    </FormContact>
   );
 };
